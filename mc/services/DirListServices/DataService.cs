@@ -30,11 +30,11 @@ namespace mc.Objects.DirViewerServices
             RefreshList();
         }
 
-        public void ChangeDirectory()
+        public void ChangeDirectory(string path)
         {
             try
             {
-
+                parentdirectoryinfo = new DirectoryInfo(@path);
             }
             catch { }
         }
@@ -62,7 +62,7 @@ namespace mc.Objects.DirViewerServices
             {
                 if (fsitemrows[row] is DirectoryItem)
                 {
-                    ChangeDirectory();
+                    ChangeDirectory(fsitemrows[row].path);
                 }
                 
                 else if (fsitemrows[row] is FileItem)
