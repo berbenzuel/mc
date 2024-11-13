@@ -9,6 +9,8 @@ namespace mc.Interfaces
     //file system base Interface - for Items in direcrories
     public interface IFSItem 
     {
-        
+        public string name { get; set; }
+        public string size { get; set; }
+        public DateTime lastmodifieddate {  get; set; }
     }
 }
