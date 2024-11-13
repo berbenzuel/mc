@@ -1,0 +1,25 @@
+﻿
+
+
+Do data service narvat vsecicko? Dat tam copy atd ale hlavne tam dat metodu co bude vypisovat dir-- bude pracovat s repozitarem.
+
+┌  ┐ ─ │ └ ┘ ├ ┤
+
+
+easter eggs:
+	udelat nejakou zkratku ktera prepne z pulnoci na pulden
+	zkratka na optimalni velikost okna
+
+
+
+/neco		|Up--DIR|Modify time  22
+
+
+
+udelat terminalek!!!! nutne pro vykonani 10
+
+ukoly: 
+	main window je objekt - udelat nejakou knihovnicku na to taky
+	pridat interfacer active prvek ktery bude moct  prijimat signaly
+
+	zapracovat na grafice at to konecne nejak vypada, skrolovani data graphics do dirvieweru
