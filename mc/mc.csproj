@@ -8,6 +8,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Dialogs\MsgBoxDef.cs\**" />
+    <EmbeddedResource Remove="Dialogs\MsgBoxDef.cs\**" />
+    <None Remove="Dialogs\MsgBoxDef.cs\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Objects\Widgets\" />
   </ItemGroup>
 

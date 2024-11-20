@@ -10,7 +10,7 @@ namespace mc.Objects.ConsoleGraphicsObject
 {
 
 
-    public abstract class ConsoleGraphicsObject : IConsoleGraphicsObject, IDrawable 
+    public abstract class ConsoleObject : IConsoleObject, IDrawable 
     {
         public Point Location { get; set; }
         public Size Size { get; set; }
@@ -20,7 +20,7 @@ namespace mc.Objects.ConsoleGraphicsObject
 
         protected ConsoleColor ForegroundColor { get; set; } = ConsoleColor.White;
         protected ConsoleColor BackgroundColor { get; set; } = ConsoleColor.Black;
-        protected Signal Signal { get; set; }
+        
 
 
         public virtual void Draw() // predelat vsechny draw na base.draw - nastaveni barvicek
@@ -89,13 +89,9 @@ namespace mc.Objects.ConsoleGraphicsObject
         }
         #endregion
 
-        public void SetActive()
+        public void SetActive(bool active)
         {
-            IsActive = true;
-        }
-        public void SetInActive()
-        {
-            IsActive= false;
+            IsActive = active;
         }
 
         public void SetBackgroundColor(ConsoleColor color)

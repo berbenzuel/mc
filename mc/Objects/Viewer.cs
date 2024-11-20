@@ -6,36 +6,29 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using mc.Interfaces;
-using mc.Objects.DirViewerServices;
+
 
 namespace mc.Objects
 {
-    public class Viewer : ConsoleGraphicsObject.ConsoleGraphicsObject
+    public class Viewer : ConsoleGraphicsObject.ConsoleObject
     {
-        private DataService dataservice = new DataService();
-        private DirList dirlist { get; set; } = new DirList();
+
+        public FSList fslist { get; set; }
 
 
 
-        public Viewer(Signal signal) // potreba predavat paletu nebo tak
-        { 
-            Connect(signal);
-
-
-            dirlist.dataservice = this.dataservice;
-
-
-
+        public Viewer() // potreba predavat paletu nebo tak
+        {
             BackgroundColor = ConsoleColor.DarkBlue;
             ForegroundColor = ConsoleColor.White;
-            
+            fslist = new FSList();
         }
 
         public override void SetUp(Point location, Size size)
         {
             base.SetUp(location, size);
 
-            dirlist.SetUp(new Point(Location.X + 1, Location.Y + 2), new Size(Size.Width - 2, Size.Height - 4));
+            fslist.SetUp(new Point(Location.X + 1, Location.Y + 2), new Size(Size.Width - 2, Size.Height - 4));
         }
 
 
@@ -43,62 +36,57 @@ namespace mc.Objects
         public override void Draw()
         {
             base.Draw();
+            
             StringBuilder sb = new StringBuilder();
             sb.Append("┌<─");
-            sb.Append(dirlist.dataservice.parentdirectoryinfo.FullName.ToString());
-            sb.Append('─', Size.Width - dirlist.dataservice.parentdirectoryinfo.FullName.Length - 8);            
-            sb.Append(".[☻]┐\n");
+            sb.Append(fslist.fsitems[0].fullname);
+            sb.Append('─', Size.Width - fslist.fsitems[0].fullname.Length - 8);
+            sb.Append(".[☻]┐");
 
+            Console.SetCursorPosition(Location.X, Location.Y);
+            Console.WriteLine(sb.ToString());
+
+            
             for (int i = 0; i < Size.Height - 3; i++)
             {
+                sb.Clear();
                 sb.Append('│');
                 sb.Append(' ', Size.Width - 2);
                 sb.Append('│');
-                sb.Append('\n');
+
+                Console.SetCursorPosition(Location.X, Location.Y + 1 + i);
+                Console.WriteLine(sb.ToString());
             }
 
+            
+            sb.Clear();
             sb.Append('├');
             sb.Append('─', Size.Width - 2);
             sb.Append('┤');
 
+            Console.SetCursorPosition(Location.X, Location.Y + Size.Height - 2);
+            Console.WriteLine(sb.ToString());
 
-            Console.SetCursorPosition(Location.X, Location.Y);
-            Console.Write(sb.ToString());
 
-            dirlist.Draw();
-        
+            fslist.Draw();
+
         }
 
 
-        #region signalsection
-
-        private void Connect(Signal signal)
+        public void UpArrowPressed()
         {
-            signal.KeyPressed += Signal_KeyPressed;
+            fslist.MoveUp();
         }
-
+        public void DownArrowPressed()
+        {
+            fslist.MoveDown();
+        }
+        public void EnterPressed()
+        {
+            fslist.Select();
+        }
         
 
-        private void Signal_KeyPressed(object? sender, ConsoleKey e)
-        {
-            if (IsActive)
-            {
-                if (e == ConsoleKey.Enter)
-                {
-                    dirlist.Select();
-                }
-                else if (e == ConsoleKey.DownArrow)
-                {
-                    dirlist.MoveDown();
-                }
-                else if (e == ConsoleKey.UpArrow)
-                {
-                    dirlist.MoveUp();
-                }
-            }
 
-
-        }
-        #endregion 
     }
 }

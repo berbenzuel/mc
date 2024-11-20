@@ -8,7 +8,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace mc.Objects
 {
-    public class CommandButton : ConsoleGraphicsObject.ConsoleGraphicsObject
+    public class CommandButton : ConsoleGraphicsObject.ConsoleObject
     {
         private Label numberLabel;
         private Label commandLabel;
@@ -16,7 +16,7 @@ namespace mc.Objects
         private int number {  get; set; }
         private string command { get; set; }
 
-        public CommandButton(int numberin, string commandin, Signal signal) 
+        public CommandButton(int numberin, string commandin) 
         {
             number = numberin;
             command = commandin;

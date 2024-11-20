@@ -23,3 +23,7 @@ ukoly:
 	pridat interfacer active prvek ktery bude moct  prijimat signaly
 
 	zapracovat na grafice at to konecne nejak vypada, skrolovani data graphics do dirvieweru
+
+	misto prekresleni vsech zaznamu nastavit buffer
+
+	filewatcher equivalent pro c#
