@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using mc.Interfaces;
+using mc.services;
 using mc.services.FSListServices;
 
 
@@ -121,17 +122,13 @@ namespace mc.Objects
         private string NameBuilder()
         {
             string prefix = "";
-            if(isupdir)
+            if (isupdir)
             {
                 return "/..";
             }
-            if (fsitem is DirectoryItem)
+            else
             {
-                prefix = "/";
-            }
-            else if (fsitem is FileItem)
-            {
-                prefix = " .";
+                //prefix = DataService.GetPrefix(fsitem);
             }
 
             StringBuilder sb = new StringBuilder();

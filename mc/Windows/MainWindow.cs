@@ -11,93 +11,124 @@ using mc.Objects;
 using mc.Objects.ConsoleGraphicsObject;
 using mc.services;
 using mc.Windows.def;
+using mc.services.FSListServices;
+using mc.Enums;
 
 namespace mc.Windows
 {
     internal class MainWindow : Window
     {
 
-        private List<ConsoleObject> consoleobjects = new List<ConsoleObject>();
+        public Viewer activeviewer { get; set; }
+        public Viewer inactiveviewer { get; set; }
 
-        private ViewerManager viewerManager;
+        private List<Viewer> viewerlist;
+
+        private List<IDrawable> drawables = new List<IDrawable>();
         private CommandSidebar commandSidebar;
         private MenuBar menuBar;
-        private Signal signal;
+        private DataService dataservice { get; set; }
+        private Dictionary<Arrows, Action> arrowpressed = new Dictionary<Arrows, Action>();
 
-        private IFSItem activeitem => viewerManager.viewers[viewerManager.activeviewerindex].fslist.activeitem;
+        private Viewer leftviewer;
+        private Viewer rightviewer;
 
-        public MainWindow(Signal Signal)
+        private delegate void setactiveviewer(Viewer toactive, Viewer toinactive);
+
+
+
+        public MainWindow(DataService servicein,Signal signalin) : base(signalin)
         {
-            signal = Signal;
-            signal.SizeChanged += S_SizeChanged;
-            signal.F8Pressed += Signal_F8Pressed;
-            signal.F5Pressed += Signal_F5Pressed;
-            signal.F7Pressed += Signal_F7Pressed1;
+            Size = new Size(Console.WindowWidth, Console.WindowHeight);
+            Console.WriteLine("pls something");
+            dataservice = servicein;      
+            signal = signalin;
             
+            viewerlist = new List<Viewer>();
 
-            
+            leftviewer = new Viewer(dataservice);
+            activeviewer = leftviewer;
+            drawables.Add(leftviewer);
+            viewerlist.Add(leftviewer);
+
+            rightviewer = new Viewer(dataservice);
+            inactiveviewer = rightviewer;
+            drawables.Add(rightviewer);
+            viewerlist.Add(rightviewer);
 
             commandSidebar = new CommandSidebar();
-            consoleobjects.Add(commandSidebar);
+            drawables.Add(commandSidebar);
 
-            menuBar = new MenuBar();
-            consoleobjects.Add(menuBar);
 
-            viewerManager = new ViewerManager(Signal);
-            consoleobjects.Add(viewerManager);
-
+            //menuBar = new MenuBar();
+            //drawables.Add(menuBar);
 
             ElementsSetUp();
-            DrawAllElements();
 
+            setactiveviewer setactiveviewer = new setactiveviewer(SetActiveViewer);
+
+            setactiveviewer(leftviewer, rightviewer);
+
+            arrowpressed.Add(Arrows.LeftArrow, () => setactiveviewer.Invoke(leftviewer, rightviewer));
+            arrowpressed.Add(Arrows.RightArrow, () => setactiveviewer.Invoke(rightviewer, leftviewer));
+            arrowpressed.Add(Arrows.UpArrow, () => activeviewer.UpArrowPressed());
+            arrowpressed.Add(Arrows.DownArrow, () => activeviewer.DownArrowPressed());
         }
 
         
 
-        private void DrawAllElements()
+        
+
+        public override void Draw()
         {
-            foreach (var graphicsObject in consoleobjects)
+            ElementsSetUp();
+
+            
+            foreach (var drawable in drawables)
             {
-                graphicsObject.Draw();
+                drawable.Draw();
             }
         }
 
-        private void ElementsSetUp()
+        private void ElementsSetUp() // daji se nastavit neco jako funkce(bude to pouze delegat) a ten bude vsechno nastavovat vyvolanim
         {
             commandSidebar.SetUp(new Point(0, Size.Height - 1), new Size(Size.Width, 1));
-            menuBar.SetUp(new Point(0, 0), new Size(Size.Width, 1));
-            viewerManager.SetUp(new Point(0, 1), new Size(Size.Width, Size.Height- 3));
-            
+            //menuBar.SetUp(new Point(0, 0), new Size(Size.Width, 1));
+            leftviewer.SetUp(new Point(0,1), new Size(Size.Width/2,Size.Height-4));
+            rightviewer.SetUp(new Point(Size.Width/2,1), new Size(Size.Width/2,Size.Height-4));
         }
 
-
-        //events
-        private void S_SizeChanged(object? sender, Size e)
+        public void ArrowPressed(Arrows arrow)
         {
-            Size = e;
-            ElementsSetUp();
-            DrawAllElements();
+            arrowpressed[arrow].Invoke();
+        }
+
+
+        public override void EnterPressed()
+        {
+            activeviewer.EnterPressed();
+        }
+
+        public void OtherKeyPressed(ConsoleKeyInfo keyinfo)
+        {
 
         }
 
-        private void Signal_F8Pressed()
+        private void SetActiveViewer(Viewer toactive, Viewer toinactive)
         {
-            DeleteDialog msg = new DeleteDialog(activeitem, signal);
-            //DataService.Delete(activeitem);
-            //viewerManager.viewers[viewerManager.activeviewerindex].fslist.Refresh();
+            activeviewer = toactive;
+            toactive.SetActive(true);
+
+            inactiveviewer = toinactive;
+            toinactive.SetActive(false);
+
+            foreach(Viewer viewer in viewerlist)
+            {
+                viewer.Draw();
+            }
         }
 
-        private void Signal_F5Pressed()
-        {
-            DataService.Copy(activeitem, viewerManager.viewers[viewerManager.activeviewerindex == 0?1:0].fslist.actualdirectory.FullName);
-            viewerManager.viewers[viewerManager.activeviewerindex].fslist.Refresh();
-        }
-        private void Signal_F7Pressed1()
-        {
-            DataService.CreateDirectory(viewerManager.viewers[viewerManager.activeviewerindex].fslist.actualdirectory.FullName + @$"\newfoo");
-            viewerManager.viewers[viewerManager.activeviewerindex].fslist.Refresh();
-        }
-        
+
 
     }
 }

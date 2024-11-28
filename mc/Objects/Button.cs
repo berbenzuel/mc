@@ -9,26 +9,30 @@ namespace mc.Objects
 {
     public class Button : ConsoleGraphicsObject.ConsoleObject
     {
-        private Action clicked;
         private Label text { get; set; }
 
-        public Button(string textin, Point locationin, Size sizein,Action action, ConsoleColor backgroundcolorin, ConsoleColor foregroundcolorin) 
+        public event Action selected;
+
+        public Button(string textin, Point locationin, Size sizein) 
         {
+            ForegroundColor = ConsoleColor.Black;
+            BackgroundColor = ConsoleColor.Yellow;
             Location = locationin;
             Size = sizein;
-            clicked = action;
-            text = new Label(textin, Location, Size, foregroundcolorin, backgroundcolorin);
-        }
-
-        public void Selected()
-        {
-            clicked.Invoke();
+            text = new Label(textin, Location, Size, ForegroundColor, BackgroundColor);
         }
 
         public override void Draw()
         {
             base.Draw();
+            text.Location = Location;
+            text.SetActive(IsActive);
             text.Draw();
+            
+        }
+        public void Select()
+        {
+            selected.Invoke();  
         }
     }
 }

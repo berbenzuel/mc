@@ -45,7 +45,11 @@ namespace mc.Objects
         {
             base.Draw();    
             Console.SetCursorPosition(Location.X, Location.Y);
-            if (leftaligned)
+            if (Text.Length >= Size.Width)
+            {
+                Console.Write(Text.Substring(0, Size.Width));
+            }
+            else if (leftaligned)
             {
                 Console.Write(Text.PadRight(Size.Width, ' '));
             }

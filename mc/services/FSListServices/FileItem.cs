@@ -19,7 +19,7 @@ namespace mc.services.FSListServices
         {
             
             name = infoin.Name;
-            size = infoin.Length.ToString();
+            size = infoin.Length.ToString("X");
             lastmodifieddate = infoin.LastWriteTime;
             fullname = infoin.FullName;
         }

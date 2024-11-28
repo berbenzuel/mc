@@ -18,7 +18,8 @@ namespace mc.services.FSListServices
         public DirectoryItem(DirectoryInfo infoin)
         {
             name = infoin.Name;
-            size = "4096";
+            
+            size =  4096.ToString("X");
             lastmodifieddate = infoin.LastWriteTime;
             fullname = infoin.FullName;
         }

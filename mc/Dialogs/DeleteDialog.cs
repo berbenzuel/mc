@@ -6,40 +6,98 @@ using System.Text;
 using System.Threading.Tasks;
 using mc.Objects;
 using mc.Interfaces;
+using mc.services;
+using System.Diagnostics;
 
 namespace mc.Dialogs
 {
-    public class DeleteDialog : DialogDef
+    public class DeleteDialog : OkCancelDialog
     {
-        private Button btnyes {  get; set; }
-        private Button btncancel { get; set; }
 
-        private string datatypedelete { get; set; }
+        private string datatype { get; set; }
         private string suffix { get; set; }
+        private string itemname { get; set; }
+        
+        
+        private IFSItem item { get; set; }
 
-        public DeleteDialog(IFSItem item, Signal signal) 
+
+
+        public DeleteDialog(IFSItem itemin, Signal signalin) : base(signalin) 
         {
+            this.item = itemin;
+            //datatype = DataService.GetTypeName(item);
+            //suffix = DataService.GetPrefix(item);
+            itemname = $"\"{suffix}{item.name}\"";
 
-            ForegroundColor = ConsoleColor.White;
-            BackgroundColor = ConsoleColor.Red;
-            SetSize(22, 8);
-            SetLocation(true);
+
+            foregroundcolor = ConsoleColor.White;
+            backgroundcolor = ConsoleColor.Red;
+
+            SetSize(new Size(22, 8));
+            SetLocation();
+
+            okbtn.SetLocation(Location.X + 3, Location.Y + Size.Height - 2);
+            cancelbtn.SetLocation(Location.X + 12, Location.Y + Size.Height - 2);
+
+            
+
             Draw();
         }
 
-        public override void Draw()
+        protected override void Okbtn_selected()
+        {
+            //DataService.Delete(item);
+            KillDialog();
+        }
+
+
+        public override void Draw() //Draw the dialog
         {
             base.Draw();
             Console.SetCursorPosition(Location.X+1, Location.Y+1);
             Console.Write("┌───── ");
-            Console.ForegroundColor = ConsoleColor.Yellow;
             Console.Write("Delete");
-            ConsoleResetColor();
             Console.Write(" ─────┐");
 
-            Console.Write(" │");
-            Console.SetCursorPosition(Location.X + Size.Width / 2 - datatypedelete.Length, Location.Y + 2);
+
+            Console.SetCursorPosition(Location.X+1, Location.Y+2);
+            Console.Write("│");
+            Console.SetCursorPosition(Location.X + Size.Width / 2 - 4 - datatype.Length/2, Location.Y + 2);
+            Console.Write("Delete " + datatype);
+            Console.SetCursorPosition(Location.X + Size.Width-2, Location.Y + 2);
+            Console.Write("│");
+
+
+            Console.SetCursorPosition(Location.X+1, Location.Y + 3);
+            Console.Write("│");
+            Console.SetCursorPosition(Location.X + Size.Width / 2 - itemname.Length/2, Location.Y + 3);
+            Console.Write(itemname);
+            Console.SetCursorPosition(Location.X + Size.Width - 2, Location.Y + 3);
+            Console.Write("│");
+
+            Console.SetCursorPosition(Location.X + 1, Location.Y + 4);
+            Console.Write("├──────────────────┤");
+
+            Console.SetCursorPosition(Location.X+1, Location.Y + 4);
+            Console.Write("│");
+            Console.SetCursorPosition(Location.X + Size.Width - 2, Location.Y + 4);
+            Console.Write("│");
+
+            Console.SetCursorPosition(Location.X + 1, Location.Y + 4);
+            Console.Write("└──────────────────┘");
+
+
+
+
+
 
         }
+
+
+
+
+
+
     }
 }

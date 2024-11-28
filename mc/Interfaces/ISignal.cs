@@ -9,7 +9,7 @@ namespace mc.Interfaces
 {
     public interface ISignal
     {
-        event EventHandler<ConsoleKey> KeyPressed;
+        event EventHandler<ConsoleKeyInfo> KeyPressed;
 
         event EventHandler<Size> SizeChanged;
     }

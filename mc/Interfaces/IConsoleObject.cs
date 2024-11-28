@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace mc.Objects.ConsoleGraphicsObject
+namespace mc.Interfaces
 {
     public interface IConsoleObject
     {
