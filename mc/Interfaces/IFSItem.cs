@@ -11,6 +11,7 @@ namespace mc.Interfaces
     {
         public string name { get; set; }
         public string size { get; set; }
-        public DateTime lastmodifieddate {  get; set; }
+        public DateTime lastmodifieddate { get; set; }
+        public string fullname { get; set; }
     }
 }

@@ -9,7 +9,7 @@ using System.Windows.Input;
 
 namespace mc.Objects
 {
-    public class CommandSidebar : ConsoleGraphicsObject.ConsoleGraphicsObject
+    public class CommandSidebar : ConsoleGraphicsObject.ConsoleObject
     {
 
         private Size commandbuttonsize {  get; set; }
@@ -17,9 +17,8 @@ namespace mc.Objects
         
         private CommandButton[] buttons = new CommandButton[commands.Length]; 
 
-        public CommandSidebar(Signal signal) 
+        public CommandSidebar() 
         {
-            signal.KeyPressed += Signal_KeyPressed;
             Maker();
         }
 
@@ -48,45 +47,7 @@ namespace mc.Objects
         {           
             for(int i  = 0; i < buttons.Length; i++) 
             {
-                buttons[i] = new CommandButton(i + 1, commands[i], Signal);
-            }
-        }
-
-        private void Signal_KeyPressed(object? sender, ConsoleKey e)
-        {
-            switch(e)
-            {
-                case ConsoleKey.F1:
-                    throw new NotImplementedException();
-
-                case ConsoleKey.F2:
-                    throw new NotImplementedException();
-
-                case ConsoleKey.F3:
-                    throw new NotImplementedException();
-
-                case ConsoleKey.F4:
-                    throw new NotImplementedException();
-
-                case ConsoleKey.F5:
-                    throw new NotImplementedException();
-
-                case ConsoleKey.F6:
-                    throw new NotImplementedException();
-
-                case ConsoleKey.F7:
-                    throw new NotImplementedException();
-
-                case ConsoleKey.F8:
-                    throw new NotImplementedException();
-
-                case ConsoleKey.F9:
-                    throw new NotImplementedException();
-
-                case ConsoleKey.F10:
-                    throw new NotImplementedException();
-
-
+                buttons[i] = new CommandButton(i + 1, commands[i]);
             }
         }
 

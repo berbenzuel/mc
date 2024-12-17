@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace mc.Interfaces
 {
-    internal class IReactable
+    public interface IWindow
     {
     }
 }

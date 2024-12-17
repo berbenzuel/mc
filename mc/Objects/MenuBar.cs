@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace mc.Objects
 {
-    internal class MenuBar : ConsoleGraphicsObject.ConsoleGraphicsObject
+    internal class MenuBar : ConsoleGraphicsObject.ConsoleObject
     {
         public MenuBar()
         { 

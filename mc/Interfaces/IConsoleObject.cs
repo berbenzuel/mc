@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace mc.Objects.ConsoleGraphicsObject
+namespace mc.Interfaces
 {
-    public interface IConsoleGraphicsObject
+    public interface IConsoleObject
     {
         Point Location { get; set; }
         Size Size { get; set; }

@@ -8,45 +8,35 @@ using mc.Interfaces;
 
 namespace mc.Windows.def
 {
-    public class Window
+    public class Window : IWindow
     {
         public Size Size { get; set; } = new Size(Console.WindowWidth, Console.WindowHeight);
-        public Signal Signal = new Signal();
+        public bool IsActive { get; set; } = true;
 
-        public virtual  void Control()
+        protected Signal signal {  get; set; }
+
+        public Window(Signal signalin) 
         {
-            while (true)
-            {
-                if (Console.KeyAvailable)
-                {
-                    ConsoleKey k = Console.ReadKey(true).Key;
-                    Signal.OnKeyPressed(k);
-                }
-
-                if (Size != new Size(Console.WindowWidth, Console.WindowHeight))
-                {
-                    Console.Clear();
-                    if(Console.WindowWidth < 150 || Console.WindowHeight < 40)
-                    {
-                        
-                        Console.SetWindowSize(150, 40);
-                        Console.SetBufferSize(150, 40);
-                    }
-                    try
-                    {
-                        Console.SetBufferSize(Console.WindowWidth, Console.WindowHeight);
-                        Signal.OnSizeChanged(new Size(Console.WindowWidth, Console.WindowHeight));
-                        Size = new Size(Console.WindowWidth, Console.WindowHeight);
-                    }
-                    catch
-                    {
-                        throw new Exception("Window sized incorrectly");
-                        
-                    }
-                    
-                }
-            }
+            signal = signalin;
         }
+        
+        public virtual void Draw()
+        {
+
+        }
+        public void SetActive(bool active)
+        {
+            IsActive = active;
+        }
+        public void SetSize(int width, int height)
+        {
+
+            Size = new Size(width, height); 
+        }
+
+
+        public virtual void EnterPressed(){}
+
     }
     
 }
